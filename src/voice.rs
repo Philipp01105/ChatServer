@@ -1,10 +1,22 @@
 use std::collections::HashMap;
 
+#[derive(Debug, Clone)]
 pub struct VoiceSession {
     pub username: String,
     pub channel: String,
     pub is_muted: bool,
     pub is_deafened: bool,
+}
+
+impl VoiceSession {
+    pub fn new(username: String, channel: String) -> Self {
+        VoiceSession {
+            username,
+            channel,
+            is_muted: false,
+            is_deafened: false,
+        }
+    }
 }
 
 pub struct VoiceChannelManager {
@@ -19,12 +31,10 @@ impl VoiceChannelManager {
     }
 
     pub fn join_voice_channel(&mut self, username: String, channel: String) {
-        self.sessions.insert(username.clone(), VoiceSession {
-            username: username.clone(),
-            channel,
-            is_muted: false,
-            is_deafened: false,
-        });
+        self.sessions.insert(
+            username.clone(),
+            VoiceSession::new(username, channel)
+        );
     }
 
     pub fn leave_voice_channel(&mut self, username: &str) -> bool {
@@ -42,7 +52,7 @@ impl VoiceChannelManager {
         self.sessions.get_mut(username).map(|session| {
             session.is_deafened = !session.is_deafened;
             if session.is_deafened {
-                session.is_muted = true;
+                session.is_muted = true; // Deafening also mutes
             }
             session.is_deafened
         })
@@ -54,5 +64,12 @@ impl VoiceChannelManager {
             .map(|s| s.username.clone())
             .collect()
     }
-}
 
+    pub fn get_user_session(&self, username: &str) -> Option<&VoiceSession> {
+        self.sessions.get(username)
+    }
+
+    pub fn list_all_sessions(&self) -> Vec<&VoiceSession> {
+        self.sessions.values().collect()
+    }
+}
