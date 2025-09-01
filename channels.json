@@ -1,0 +1,22 @@
+{
+  "gaming": {
+    "name": "gaming",
+    "channel_type": "Voice",
+    "users": []
+  },
+  "random": {
+    "name": "random",
+    "channel_type": "Text",
+    "users": []
+  },
+  "general": {
+    "name": "general",
+    "channel_type": "Text",
+    "users": []
+  },
+  "voice-lobby": {
+    "name": "voice-lobby",
+    "channel_type": "Voice",
+    "users": []
+  }
+}
